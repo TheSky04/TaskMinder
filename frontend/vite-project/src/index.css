@@ -1,0 +1,58 @@
+@import "tailwindcss";
+/* @import url("https://fonts.googleapis.com/css2?family=Rubik:wght@400;500;600;700&display=swap"); */
+
+:root {
+  --violet-main: #b197fc;
+  --violet-dark: #6741d9;
+  --violet-light:#e5dbff;
+  --white: #ffffff;
+  --gray-light: #f3f3f3;
+  --gray-dark: #333;
+}
+
+body {
+  margin: 0;
+  padding: 0;
+  box-sizing: border-box;
+  font-family: 'Rubik', sans-serif;
+}
+
+html {
+  font-size: 62.5%;
+  font-family: "Rubik", sans-serif !important;
+}
+
+
+.menuLink--active{
+  background-image: linear-gradient(to right, var(--white), var(--violet-main));
+  color:text-violet
+}
+
+.menuLink--active:hover {
+  background-image: linear-gradient(to right, var(--white), var(--violet-dark));
+  box-shadow: 0 1px 2px 0 rgba(0, 0, 0, 0.05);
+}
+
+@layer utilities {
+  .scrollbar::-webkit-scrollbar {
+    width: 10px;
+    height: 10px;
+
+  }
+
+  .scrollbar::-webkit-scrollbar-track {
+    border-radius: 100vh;
+    background: var(--violet-light);
+  }
+
+  .scrollbar::-webkit-scrollbar-thumb {
+    background: var(--violet-dark);
+    border-radius: 100vh;
+    border: 3px solid var(--violet-dark);
+    cursor:pointer;
+  }
+
+  .scrollbar::-webkit-scrollbar-thumb:hover {
+    background: var(--violet-dark);
+  }
+}
