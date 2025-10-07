@@ -56,6 +56,15 @@ class Task {
             throw err;
         }
     }
+
+    async update(taskId) {
+        const sql = `
+            UPDATE tasks 
+            SET projectName = ?, taskName = ?, progress = ?, totalProgress = ?, date = ?
+            WHERE id = ? AND userId = ?`;
+        const values = [this.projectName, this.taskName, this.progress, this.totalProgress, this.date, taskId, this.userId];
+        return db.execute(sql, values);
+    }
 }
 
 module.exports = Task;
