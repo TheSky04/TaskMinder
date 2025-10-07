@@ -1,11 +1,13 @@
 import { useState } from "react";
 import { useNavigate } from "react-router-dom";
-
+import { useContext } from "react";
+import UserContext from "../../context/userContext";
 
 function Header() {
   const [open, setOpen] = useState(false);
   const navigate = useNavigate();
-  const [user, setUser] = useState(null);
+
+  const { user: currentUser } = useContext(UserContext);
 
  const handleLogout = () => {
     localStorage.removeItem("authToken");
@@ -67,7 +69,7 @@ function Header() {
   return (
     <div className="flex justify-between items-center p-14 pb-5 border-b border-gray-200 relative">
       <div>
-        <p className="text-black text-5xl font-bold pb-3">Hello, {user?.name}</p>
+        <p className="text-black text-5xl font-bold pb-3">Hello, {currentUser?.name}</p>
         <p className="text-gray-500 text-xl">Lets organize your Daily Tasks</p>
       </div>
 
@@ -84,8 +86,8 @@ function Header() {
         <span>{bellLogo}</span>
         <span>{profilePhoto}</span>
         <div>
-          <p className="font-bold text-xl">{user?.name}</p>
-          <p className="text-gray-500">{user?.role}</p>
+          <p className="font-bold text-xl">{currentUser?.name}</p>
+          <p className="text-gray-500">{currentUser?.role}</p>
         </div>
         <span onClick={() => setOpen(!open)}>{chevronDownLogo}</span>
 
