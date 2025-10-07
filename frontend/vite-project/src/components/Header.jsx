@@ -84,13 +84,11 @@ function Header() {
 
   return (
     <div className="flex justify-between items-center p-14 pb-5 border-b border-gray-200 relative">
-      {/* Sol kısım */}
       <div>
         <p className="text-black text-5xl font-bold pb-3">Hello, {user?.name}</p>
         <p className="text-gray-500 text-xl">Lets organize your Daily Tasks</p>
       </div>
 
-      {/* Arama */}
       <div className="flex items-center gap-2 border border-gray-300 rounded-lg w-96 px-3 py-2 pl-2">
         <span>{searchIcon}</span>
         <input
@@ -100,7 +98,6 @@ function Header() {
         />
       </div>
 
-      {/* Sağ kısım */}
       <div className="flex items-center gap-6 pr-10 relative">
         <span>{bellLogo}</span>
         <span>{profilePhoto}</span>
@@ -110,9 +107,8 @@ function Header() {
         </div>
         <span onClick={() => setOpen(!open)}>{chevronDownLogo}</span>
 
-        {/* Dropdown */}
         {open && (
-          <div className="absolute right-10 top-16 bg-white shadow-lg rounded-lg p-2 w-32">
+          <div className="z-20 absolute right-10 top-16 bg-white shadow-lg rounded-lg p-2 w-32">
             <button
               onClick={handleLogout}
               className="w-full text-left text-violet-500 hover:bg-gray-100 px-1 py-1 rounded"
