@@ -1,10 +1,10 @@
-import React, { useState } from 'react'
+import React, { useEffect, useState } from 'react'
 import InputBlock from './InputBlock'
 import toast, { Toaster } from 'react-hot-toast';
 import { useMutation, useQueryClient } from '@tanstack/react-query';
 
 
-function TaskModel({ setTaskModelOpen }) {
+function TaskModel({ setTaskModelOpen, isEditing = false, selectedTask }) {
     const [projectName, setProjectName] = useState('');
     const [taskName, setTaskName] = useState('');
     const [progress, setProgress] = useState(0);
@@ -12,11 +12,23 @@ function TaskModel({ setTaskModelOpen }) {
     const [date, setDate] = useState('');
     const queryClient = useQueryClient();
 
+    useEffect(() => {
+        setProjectName(isEditing && selectedTask ? selectedTask.projectName : '');
+        setTaskName(isEditing && selectedTask ? selectedTask.taskName : '');
+        setProgress(isEditing && selectedTask ? selectedTask.progress : 0);
+        setTotalProgress(isEditing && selectedTask ? selectedTask.totalProgress : 0);
+        setDate(isEditing && selectedTask ? new Date(selectedTask.date).toISOString().split('T')[0] : '');
 
-    const createTaskMutation = useMutation({
+        
+    }, [selectedTask,isEditing]);
+
+    const editOrCreateTaskMutation = useMutation({
         mutationFn: async (newTask) => {
-        const response = await fetch('http://localhost:5000/tasks', {
-            method: 'POST',
+
+        const endpoint = isEditing ? `http://localhost:5000/tasks/${selectedTask.id}` : 'http://localhost:5000/tasks';
+
+        const response = await fetch(endpoint, {
+            method: isEditing ? 'PATCH' : 'POST',
             headers: {
             'Content-Type': 'application/json',
             'Authorization': `Bearer ${localStorage.getItem('authToken')}`,
@@ -25,14 +37,14 @@ function TaskModel({ setTaskModelOpen }) {
         });
 
         if (!response.ok) {
-            throw new Error('Failed to create task');
+            throw new Error(`Failed to ${isEditing ? 'updating' : 'creating'} task`);
         }
 
         return response.json(); 
         },
 
         onSuccess: () => {
-        toast.success('Task created successfully!');
+        toast.success(`Task ${isEditing ? 'updated' : 'created'} successfully!`);
         queryClient.invalidateQueries(['tasks']);
         setTaskModelOpen(false);
         },
@@ -43,8 +55,11 @@ function TaskModel({ setTaskModelOpen }) {
     });
 
     const handleCreateTask = () => {
+
         const newTask = { projectName, taskName, progress, totalProgress, date };
-        createTaskMutation.mutate(newTask);
+        editOrCreateTaskMutation.mutate(newTask);
+        return;
+
     };
 
     return (
@@ -55,7 +70,7 @@ function TaskModel({ setTaskModelOpen }) {
             ></div>
 
             <div className='pl-10 p-10 rounded-md absolute bg-white shadow-md w-[50rem] h-[40rem] top-1/3 left-1/2 -translate-x-1/2 -translate-y-1/2 z-10'>
-                <h4 className='text-center text-3xl my-5'>Create Task</h4>
+                <h4 className='text-center text-3xl my-5'>{isEditing ? 'Edit Task' : 'Create Task'}</h4>
                 <button
                     className='text-3xl ml-auto absolute right-5 top-2 hover:opacity-50 cursor-pointer transition-all ease-in-out'
                     onClick={() => setTaskModelOpen(false)}
@@ -74,7 +89,7 @@ function TaskModel({ setTaskModelOpen }) {
                         onClick={handleCreateTask}
                         className='bg-violet-500 py-2 px-5 ml-5 rounded-md text-white cursor-pointer hover:bg-violet-600 transition-all ease-in-out'
                     >
-                        Create Task
+                        {isEditing ? 'Edit Task' : 'Create Task'}
                     </button>
                 </div>
             </div>

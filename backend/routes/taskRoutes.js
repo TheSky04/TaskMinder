@@ -6,6 +6,6 @@ const router = express.Router();
 
 router.post('/', verifyToken, createTask);
 router.get('/', verifyToken, getTasks);
-router.patch('/update/:taskId', verifyToken, updateTask);
+router.patch('/:taskId', verifyToken, updateTask);
 
 module.exports = router;
