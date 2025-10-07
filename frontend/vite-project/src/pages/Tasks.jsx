@@ -1,14 +1,16 @@
-import React from 'react'
+import React, { useContext } from 'react'
 import TaskCard from '../components/TaskCard'
 import { useState } from 'react';
 import TaskModel from '../components/TaskModel';
 import { useEffect } from 'react';
 import { useQuery } from '@tanstack/react-query';
+// import UserContext from '../../context/userContext';
 
 
 function Tasks() {
 
   const [taskModelOpen, setTaskModelOpen] = useState(false);
+  // const { user } = useContext(UserContext);
 
   const fetchTasks = async () => {
     const response = await fetch('http://localhost:5000/tasks', {

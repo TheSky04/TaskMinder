@@ -1,7 +1,6 @@
-import React, { useState } from "react";
+import { useState } from "react";
 import { useNavigate } from "react-router-dom";
-import api from "../services/authService";
-import { useEffect } from "react";
+
 
 function Header() {
   const [open, setOpen] = useState(false);
@@ -14,23 +13,6 @@ function Header() {
     navigate("/login");
 };
 
-  useEffect(() => {
-    const getUserData = async () => {
-      try {
-        const response = await api.get("/auth/user/profile", {
-          headers: {
-            Authorization: `Bearer ${localStorage.getItem("authToken")}`,
-          },
-        });
-        console.log("User Data:", response.data);
-        setUser(response.data.user);
-      } catch (error) {
-        console.error("Error fetching user data:", error);
-      }
-    };
-
-    getUserData();
-  }, []);
 
   const bellLogo = (
     <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24"

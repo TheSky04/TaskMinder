@@ -18,6 +18,8 @@ import Settings from "./pages/Settings";
 import Register from "./pages/Register";
 import Login from "./pages/Login";
 import Dashboard from "./pages/Dashboard";
+import UserProvider from "../context/userProvider.jsx";
+
 
 function App() {
   const queryClient = new QueryClient({
@@ -29,7 +31,6 @@ function App() {
   });
 
   const router = createBrowserRouter([
-    // Layout’a dahil olan route’lar
     {
       element: <Layout />,
       children: [
@@ -54,24 +55,26 @@ function App() {
 
   return (
     <>
-      <QueryClientProvider client={queryClient}>
-        <RouterProvider router={router}></RouterProvider>
-        <Toaster
-          position="top-center"
-          gutter={12}
-          containerStyle={{ margin: "8px" }}
-          toastOptions={{
-            success: { duration: 3000 },
-            error: { duration: 5000 },
-            style: {
-              fontSize: "16px",
-              maxWidth: "500px",
-              padding: "16px 24px",
-              color: "#000",
-            },
-          }}
-        />
-      </QueryClientProvider>
+      <UserProvider>
+        <QueryClientProvider client={queryClient}>
+          <RouterProvider router={router}></RouterProvider>
+          <Toaster
+            position="top-center"
+            gutter={12}
+            containerStyle={{ margin: "8px" }}
+            toastOptions={{
+              success: { duration: 3000 },
+              error: { duration: 5000 },
+              style: {
+                fontSize: "16px",
+                maxWidth: "500px",
+                padding: "16px 24px",
+                color: "#000",
+              },
+            }}
+          />
+        </QueryClientProvider>
+      </UserProvider>
     </>
   );
 }
