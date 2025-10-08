@@ -47,7 +47,7 @@ function TaskCard({title, detail, progress, totalProgress = 0, date, selectedTas
             <p>{progress}/{totalProgress}</p>
         </div>
         <ProgressBar value={progress} total={totalProgress} />
-        <span className='bg-red-200 text-red-500 py-2 px-5 rounded-md'>{date}</span>
+        <span className='bg-violet-200 text-violet-500 py-2 px-5 rounded-md'>{date}</span>
     </div>
   )
 }
