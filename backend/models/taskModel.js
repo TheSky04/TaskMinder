@@ -65,6 +65,14 @@ class Task {
         const values = [this.projectName, this.taskName, this.progress, this.totalProgress, this.date, taskId, this.userId];
         return db.execute(sql, values);
     }
+
+    static async delete(taskId, userId) {
+        const sql = 'DELETE FROM tasks WHERE id = ? AND userId = ?';
+        const values = [taskId, userId];
+        const [result] = await db.execute(sql, values);
+        return result;
+}
+
 }
 
 module.exports = Task;

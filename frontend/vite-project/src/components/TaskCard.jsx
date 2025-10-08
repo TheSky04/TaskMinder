@@ -2,27 +2,41 @@ import React from 'react'
 import ProgressBar from './ProgressBar';
 import { useState } from 'react';
 import TaskModel from './TaskModel';
+import {detailIcon, adjustmentIcon, editIcon, deleteIcon} from '../../icons/icons.jsx';
+import ConfirmModal from './ConfirmModal';
 
 function TaskCard({title, detail, progress, totalProgress = 0, date, selectedTask}) {
 
-  const detailIcon = (<svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="1.5" stroke="currentColor" class="size-6"><path stroke-linecap="round" stroke-linejoin="round" d="M6.75 12a.75.75 0 1 1-1.5 0 .75.75 0 0 1 1.5 0ZM12.75 12a.75.75 0 1 1-1.5 0 .75.75 0 0 1 1.5 0ZM18.75 12a.75.75 0 1 1-1.5 0 .75.75 0 0 1 1.5 0Z" /></svg>)
-  const adjustmentIcon = (<svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="1.5" stroke="currentColor" class="size-6"><path stroke-linecap="round" stroke-linejoin="round" d="M10.5 6h9.75M10.5 6a1.5 1.5 0 1 1-3 0m3 0a1.5 1.5 0 1 0-3 0M3.75 6H7.5m3 12h9.75m-9.75 0a1.5 1.5 0 0 1-3 0m3 0a1.5 1.5 0 0 0-3 0m-3.75 0H7.5m9-6h3.75m-3.75 0a1.5 1.5 0 0 1-3 0m3 0a1.5 1.5 0 0 0-3 0m-9.75 0h9.75" /></svg>);
   const [taskModelOpen, setTaskModelOpen] = useState(false);
   const [isEditing, setIsEditing] = useState(false);
+  const [openConfirmModal, setOpenConfirmModal] = useState(false);
+
+  const openDetailModal = () => {
+    console.log("clicked");
+  }
 
   const handleEditTask = () => {
-    console.log(selectedTask);
-  
     setTaskModelOpen(true);
     setIsEditing(true);
+  }
+
+  const handleOpenConfirmModal = () => {
+    setOpenConfirmModal(true);
   }
 
   return (
     <div className='min-w-[30rem] bg-white py-7 px-10 rounded-lg shadow-md space-y-4' >
         {taskModelOpen && <TaskModel selectedTask={selectedTask} setTaskModelOpen={setTaskModelOpen} isEditing={isEditing}/>}
+        {openConfirmModal && <ConfirmModal setOpenConfirmModal={setOpenConfirmModal}/>}
         <div className='flex justify-between items-center'>
             <h4 className='text-xl font-bold'>{title}</h4>
-            <p className='text-l text-gray-500 cursor-pointer' onClick={handleEditTask}>{detailIcon}</p>
+            <div className='text-l text-gray-500 cursor-pointer relative group'>
+              {detailIcon}
+              <div className='bg-white py-1 pl-3 w-32 absolute top-5 right-0 shadow-md rounded-md text-violet-400 transition-all hidden group-hover:flex flex-col gap-5'>
+                <button className='flex gap-2 hover:text-violet-700' onClick={handleEditTask}>{editIcon} Edit</button>
+                <button className='hover:text-violet-700 flex gap-2' onClick={handleOpenConfirmModal}>{deleteIcon} Delete</button>
+              </div>
+            </div>
         </div>
         <p>{detail}</p>
         <div className='flex justify-between items-center text-gray-400'>
