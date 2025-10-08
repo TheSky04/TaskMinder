@@ -27,7 +27,7 @@ function TaskCard({title, detail, progress, totalProgress = 0, date, selectedTas
   return (
     <div className='min-w-[30rem] bg-white py-7 px-10 rounded-lg shadow-md space-y-4' >
         {taskModelOpen && <TaskModel selectedTask={selectedTask} setTaskModelOpen={setTaskModelOpen} isEditing={isEditing}/>}
-        {openConfirmModal && <ConfirmModal setOpenConfirmModal={setOpenConfirmModal}/>}
+        {openConfirmModal && <ConfirmModal selectedTask={selectedTask} setOpenConfirmModal={setOpenConfirmModal}/>}
         <div className='flex justify-between items-center'>
             <h4 className='text-xl font-bold'>{title}</h4>
             <div className='text-l text-gray-500 cursor-pointer relative group'>
