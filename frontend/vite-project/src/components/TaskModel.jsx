@@ -98,7 +98,7 @@ function TaskModel({ setTaskModelOpen, isEditing = false, selectedTask }) {
       priority,
     };
 
-    // editOrCreateTaskMutation.mutate(newTask);
+    editOrCreateTaskMutation.mutate(newTask);
     console.log(newTask);
     setTaskModelOpen(false);
   };

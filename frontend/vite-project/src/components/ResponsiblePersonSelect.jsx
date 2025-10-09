@@ -57,7 +57,7 @@ export default function ResponsiblePersonSelect({
       >
         <option value={users[0]} disabled hidden>Select person</option>
         {users?.map((user) => (
-          <option key={user.id} value={user?.name}>{user?.name}</option>
+          <option key={user.id} value={user?.id}>{user?.name}</option>
         ))}
       </select>
     </div>

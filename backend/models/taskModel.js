@@ -1,26 +1,29 @@
 const db = require('../db');
 
 class Task {
-    constructor(projectName, taskName, progress, totalProgress, date, userId) {
+    constructor(projectName, taskName, progress, date, responsiblePerson, priority, userId) {
         this.projectName = projectName;
         this.taskName = taskName;
         this.progress = progress;
-        this.totalProgress = totalProgress;
         this.date = date;
-        this.userId = userId;
+        this.responsiblePerson = responsiblePerson; // userId
+        this.priority = priority;
+        this.userId = userId; // görevi oluşturan kullanıcı ID’si
     }
 
+    // Yeni görev oluşturma
     async save() {
         try {
             const [result] = await db.execute(
-                `INSERT INTO tasks (projectName, taskName, progress, totalProgress, date, userId)
-                 VALUES (?, ?, ?, ?, ?, ?)`,
+                `INSERT INTO tasks (projectName, taskName, progress, date, responsiblePerson, priority, userId)
+                 VALUES (?, ?, ?, ?, ?, ?, ?)`,
                 [
                     this.projectName,
                     this.taskName,
                     this.progress,
-                    this.totalProgress,
                     this.date,
+                    this.responsiblePerson,
+                    this.priority,
                     this.userId
                 ]
             );
@@ -32,22 +35,25 @@ class Task {
     }
 
     static async findAllByUser(userId) {
-        try {
-            const [rows] = await db.execute(
-                'SELECT * FROM tasks WHERE userId = ?',
-                [userId]
-            );
-            return rows;
-        } catch (err) {
-            console.error('Find tasks error:', err);
-            throw err;
-        }
+        const [rows] = await db.execute(
+            `SELECT t.*, u.name AS responsiblePersonName
+            FROM tasks t
+            LEFT JOIN users u ON t.responsiblePerson = u.id
+            WHERE t.userId = ?`,
+            [userId]
+        );
+        return rows;
     }
 
+
+    // Tek görev çekme
     static async findById(taskId) {
         try {
             const [rows] = await db.execute(
-                'SELECT * FROM tasks WHERE id = ?',
+                `SELECT t.*, u.username AS responsiblePersonName
+                 FROM tasks t
+                 LEFT JOIN users u ON t.responsiblePerson = u.id
+                 WHERE t.id = ?`,
                 [taskId]
             );
             return rows[0];
@@ -57,22 +63,43 @@ class Task {
         }
     }
 
+    // Görev güncelleme
     async update(taskId) {
-        const sql = `
-            UPDATE tasks 
-            SET projectName = ?, taskName = ?, progress = ?, totalProgress = ?, date = ?
-            WHERE id = ? AND userId = ?`;
-        const values = [this.projectName, this.taskName, this.progress, this.totalProgress, this.date, taskId, this.userId];
-        return db.execute(sql, values);
+        try {
+            const sql = `
+                UPDATE tasks 
+                SET projectName = ?, taskName = ?, progress = ?, date = ?, responsiblePerson = ?, priority = ?
+                WHERE id = ? AND userId = ?`;
+            const values = [
+                this.projectName,
+                this.taskName,
+                this.progress,
+                this.date,
+                this.responsiblePerson,
+                this.priority,
+                taskId,
+                this.userId
+            ];
+            return db.execute(sql, values);
+        } catch (err) {
+            console.error('Task update error:', err);
+            throw err;
+        }
     }
 
+    // Görev silme
     static async delete(taskId, userId) {
-        const sql = 'DELETE FROM tasks WHERE id = ? AND userId = ?';
-        const values = [taskId, userId];
-        const [result] = await db.execute(sql, values);
-        return result;
-}
-
+        try {
+            const [result] = await db.execute(
+                'DELETE FROM tasks WHERE id = ? AND userId = ?',
+                [taskId, userId]
+            );
+            return result;
+        } catch (err) {
+            console.error('Task delete error:', err);
+            throw err;
+        }
+    }
 }
 
 module.exports = Task;
