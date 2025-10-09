@@ -1,30 +1,33 @@
 import React, { useState, useEffect } from "react";
-import UserContext from "./userContext"
+import UserContext from "./userContext";
 import api from "../src/services/authService";
-
 
 const UserProvider = ({ children }) => {
   const [user, setUser] = useState(null);
 
-  useEffect(() => {
-    const getUserData = async () => {
-      try {
-        const response = await api.get("/auth/user/profile", {
-          headers: {
-            Authorization: `Bearer ${localStorage.getItem("authToken")}`,
-          },
-        });
-        setUser(response.data.user);
-      } catch (error) {
-        console.error("Error fetching user data:", error);
-      }
-    };
+  const getUserData = async () => {
+    try {
+      const token = localStorage.getItem("authToken");
+      if (!token) return;
 
+      const response = await api.get("/auth/user/profile", {
+        headers: {
+          Authorization: `Bearer ${token}`,
+        },
+      });
+      setUser(response.data.user);
+    } catch (error) {
+      console.error("Error fetching user data:", error);
+    }
+  };
+
+  // İlk renderda kullanıcıyı yükle
+  useEffect(() => {
     getUserData();
   }, []);
 
   return (
-    <UserContext.Provider value={{ user, setUser }}>
+    <UserContext.Provider value={{ user, setUser, refreshUser: getUserData }}>
       {children}
     </UserContext.Provider>
   );

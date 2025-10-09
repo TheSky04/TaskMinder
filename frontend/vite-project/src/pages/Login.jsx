@@ -2,12 +2,14 @@ import React, { useState } from "react";
 import { login } from "../services/authService";
 import { useNavigate } from "react-router-dom";
 import { toast } from "react-hot-toast";
-import { useEffect } from "react";
+import { useEffect,useContext } from "react";
+import UserContext from "../../context/userContext";
 
 export default function Login() {
     const [email, setEmail] = useState("");
     const [password, setPassword] = useState("");
     const navigate = useNavigate();
+    const { refreshUser } = useContext(UserContext);
 
     useEffect(() => {
         localStorage.removeItem("authToken");
@@ -20,6 +22,7 @@ export default function Login() {
             const res = await login({ email, password });
             localStorage.setItem("authToken", res.data.token);
             localStorage.setItem("refreshToken", res.data.refreshToken);
+            await refreshUser();
             toast.success("Login successful!");
             navigate("/tasks");
         } catch (err) {

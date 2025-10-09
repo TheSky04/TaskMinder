@@ -4,14 +4,14 @@ import { useState } from 'react';
 import TaskModel from '../components/TaskModel';
 import { useEffect } from 'react';
 import { useQuery } from '@tanstack/react-query';
-// import UserContext from '../../context/userContext';
+import UserContext from '../../context/userContext';
 
 
 function Tasks() {
 
   const [taskModelOpen, setTaskModelOpen] = useState(false);
   const [selectedTask, setSelectedTask] = useState(null);
-  // const { user } = useContext(UserContext);
+  const { user } = useContext(UserContext);
 
   const fetchTasks = async () => {
     const response = await fetch('http://localhost:5000/tasks', {
@@ -35,6 +35,7 @@ function Tasks() {
       refetchOnWindowFocus: false,
       staleTime: 1000 * 60 * 10, // 10 minutes
       cacheTime: 1000 * 60 * 30, // 30 minutes  
+      enabled: !!user // only run the query if user is available
     });
 
     useEffect(() => {
@@ -49,7 +50,7 @@ function Tasks() {
         <button className="bg-violet-500 py-2 px-5 m-2 ml-5 rounded-md text-white cursor-pointer hover:bg-violet-600 transition-all ease-in-out" onClick={() => setTaskModelOpen(true)}>Create Task</button>
         {taskModelOpen && <TaskModel fetchTasks={fetchTasks} setTaskModelOpen={setTaskModelOpen}/>}
         <div className="p-5 flex gap-5 overflow-x-auto w-[80vw] scrollbar">
-          {tasks.map((task) => (<TaskCard selectedTask={task} key={task.id} title={task.projectName} detail={task.taskName} progress={task.progress} totalProgress={task.totalProgress} date={task.date.slice(0,10)}></TaskCard>))}
+          {tasks?.map((task) => (<TaskCard selectedTask={task} key={task.id} title={task.projectName} detail={task.taskName} progress={task.progress} totalProgress={task.totalProgress} date={task.date.slice(0,10)}></TaskCard>))}
         </div>
     </>
   )
