@@ -57,12 +57,12 @@ function Tasks() {
         {tasks.map((task) => (
           <TaskCard
             selectedTask={task}
-            key={task.id}
-            title={task.projectName}
-            detail={task.taskName}
-            progress={task.progress}
-            totalProgress={task.totalProgress}
-            date={task.date.slice(0,10)}
+            key={task?.id}
+            title={task?.projectName}
+            detail={task?.taskName}
+            progress={task?.progress}
+            totalProgress={task?.totalProgress}
+            date={task?.date?.slice(0,10)}
           />
         ))}
       </div>

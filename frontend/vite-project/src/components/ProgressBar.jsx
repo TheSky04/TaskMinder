@@ -15,20 +15,20 @@ const ProgressBar = ({ value }) => {
       else if (num >= 50 && num < 60) style = "bg-violet-600";
       else if (num >= 60 && num < 70) style = "bg-violet-700";
       else if (num >= 70 && num < 80) style = "bg-violet-800";
-      else if (num >= 80 && num < 90) style = "bg-violet-900";
-      else if (num >= 90 && num <= 100) style = "bg-violet-950";
+      else if (num >= 80 && num < 90) style = "bg-green-500";
+      else if (num >= 90 && num <= 100) style = "bg-green-600";
       else style = "bg-gray-300";
 
       return style;
   }
 
   return (
-    <div className="relative h-5 bg-gray-200 rounded overflow-hidden w-full">
+    <div className="relative h-5 bg-gray-400 rounded overflow-hidden w-full">
       <div
         className={`h-full ${checkPercentage(value)} transition-all duration-300`}
         style={{ width: `${value}%` }}
       ></div>
-      <span className="absolute inset-0 flex items-center justify-center font-medium text-black">
+      <span className={`absolute inset-0 flex items-center justify-center font-medium ${value > 50 ? "text-white" : "text-black" }`}>
         {value} / 100
       </span>
     </div>
