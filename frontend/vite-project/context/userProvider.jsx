@@ -21,7 +21,6 @@ const UserProvider = ({ children }) => {
     }
   };
 
-  // İlk renderda kullanıcıyı yükle
   useEffect(() => {
     getUserData();
   }, []);

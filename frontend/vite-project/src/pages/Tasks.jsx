@@ -51,8 +51,9 @@ function Tasks() {
       </button>
 
       {taskModelOpen && <TaskModel refetchTasks={refetch} setTaskModelOpen={setTaskModelOpen} />}
-
+      <h3 className='ml-5 font-bold text-2xl my-5'>In Progress ({tasks.length})</h3>
       <div className="p-5 flex gap-5 overflow-x-auto w-[80vw] scrollbar">
+        
         {tasks.map((task) => (
           <TaskCard
             selectedTask={task}

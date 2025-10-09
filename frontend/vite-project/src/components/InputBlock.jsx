@@ -1,8 +1,9 @@
 import React from 'react'
 
-function InputBlock({ id, label, type, value, onChange }) {
+function InputBlock({ id, label, type, value, onChange,required = false}) {
     return (
-        <div className='grid grid-cols-[10rem_1fr] ml-5 gap-5 mt-10 items-center'>
+        <div className={'grid grid-cols-[.2rem_15rem_1fr] ml-5 gap-5 mt-10 items-center'}>
+            {required ? <span className='text-red-500 text-2xl'>*</span> : <span></span>}
             <label htmlFor={id} className='text-2xl'>{label}</label>
             <input
                 type={type}
