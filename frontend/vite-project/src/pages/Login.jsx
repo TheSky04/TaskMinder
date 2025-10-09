@@ -21,7 +21,7 @@ export default function Login() {
             localStorage.setItem("authToken", res.data.token);
             localStorage.setItem("refreshToken", res.data.refreshToken);
             toast.success("Login successful!");
-            navigate("/dashboard");
+            navigate("/tasks");
         } catch (err) {
             toast.error(err.response?.data?.message || "Login failed!");
         }

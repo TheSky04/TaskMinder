@@ -17,7 +17,6 @@ import Settings from "./pages/Settings";
 
 import Register from "./pages/Register";
 import Login from "./pages/Login";
-import Dashboard from "./pages/Dashboard";
 import UserProvider from "../context/userProvider.jsx";
 
 
@@ -34,7 +33,7 @@ function App() {
     {
       element: <Layout />,
       children: [
-        { path: "/", element: <Navigate to="/dashboard" replace /> },
+        { path: "/", element: <Navigate to="/tasks" replace /> },
         { path: "/tasks", element: <PrivateRoute><Tasks /></PrivateRoute> },
         { path: "/taskDetail/:taskId", element: <PrivateRoute><TaskDetail /></PrivateRoute> },
         { path: "/projects", element: <PrivateRoute><Projects /></PrivateRoute> },
@@ -44,13 +43,11 @@ function App() {
         { path: "/message", element: <PrivateRoute><Message /></PrivateRoute> },
         { path: "/reports", element: <PrivateRoute><Reports /></PrivateRoute> },
         { path: "/settings", element: <PrivateRoute><Settings /></PrivateRoute> },
-        { path: "/dashboard", element: <PrivateRoute><Dashboard /></PrivateRoute> },
       ],
     },
 
     { path: "/register", element: <Register /> },
     { path: "/login", element: <Login /> },
-    { path: "/dashboard", element: <Dashboard /> },
   ]);
 
   return (
