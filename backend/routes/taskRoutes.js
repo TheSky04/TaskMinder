@@ -1,11 +1,13 @@
 const express = require('express');
-const { createTask, getTasks,updateTask,deleteTask } = require('../controllers/taskController');
+const { createTask, getAllTasks,updateTask,deleteTask,getTasksOfUser,getTasksCreatedByMe } = require('../controllers/taskController');
 const verifyToken = require('../middleware/authMiddleware');
 
 const router = express.Router();
 
 router.post('/', verifyToken, createTask);
-router.get('/', verifyToken, getTasks);
+router.get('/', verifyToken, getAllTasks);
+router.get('/me', verifyToken, getTasksOfUser);
+router.get('/create/me', verifyToken, getTasksCreatedByMe);
 router.patch('/:taskId', verifyToken, updateTask);
 router.delete('/:taskId', verifyToken, deleteTask);
 

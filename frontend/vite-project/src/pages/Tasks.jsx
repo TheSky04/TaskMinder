@@ -50,21 +50,33 @@ function Tasks() {
         Create Task
       </button>
 
-      {taskModelOpen && <TaskModel refetchTasks={refetch} setTaskModelOpen={setTaskModelOpen} />}
-      <h3 className='ml-5 font-bold text-2xl my-5'>In Progress ({tasks.length})</h3>
-      <div className="p-5 flex gap-5 overflow-x-auto w-[80vw] scrollbar">
-        
-        {tasks.map((task) => (
-          <TaskCard
-            selectedTask={task}
-            key={task?.id}
-            title={task?.projectName}
-            detail={task?.taskName}
-            progress={task?.progress}
-            totalProgress={task?.totalProgress}
-            date={task?.date?.slice(0,10)}
-          />
-        ))}
+      <div className='ALL-TASKS'>
+        {taskModelOpen && <TaskModel refetchTasks={refetch} setTaskModelOpen={setTaskModelOpen} />}
+        <h3 className='ml-5 font-bold text-2xl my-5'>All tasks ({tasks.length})</h3>
+        <div className="p-5 flex gap-5 overflow-x-auto w-[80vw] scrollbar">
+          
+          {tasks.map((task) => (
+            <TaskCard
+              selectedTask={task}
+              key={task?.id}
+              title={task?.projectName}
+              detail={task?.taskName}
+              progress={task?.progress}
+              totalProgress={task?.totalProgress}
+              date={task?.date?.slice(0,10)}
+            />
+          ))}
+        </div>
+      </div>
+
+
+      <div className='MY-TODOS'>
+        <h3 className="ml-5 font-bold text-2xl my-5 mt-10">My Todos</h3>
+        <div className="w-[42rem] h-[40rem] overflow-y-auto ml-5 scrollbar">
+          <TaskCard title="New task" detail="New Detail" progress="50" date="2025-10-09" priority="low" />
+          <TaskCard title="New task" detail="New Detail" progress="50" date="2025-10-09" priority="low" />
+          <TaskCard title="New task" detail="New Detail" progress="50" date="2025-10-09" priority="low" />
+        </div>
       </div>
     </>
   );

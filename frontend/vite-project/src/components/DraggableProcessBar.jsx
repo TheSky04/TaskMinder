@@ -20,7 +20,7 @@ export default function DraggableProcessBar({progress = 50,setProgress}) {
     const rect = bar.getBoundingClientRect();
     const offsetX = e.clientX - rect.left;
     const newProgress = Math.min(Math.max((offsetX / rect.width) * 100, 0), 100);
-    setProgress(newProgress.toFixed(0));
+    setProgress(newProgress);
   };
 
   return (

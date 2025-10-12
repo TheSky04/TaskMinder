@@ -1,7 +1,29 @@
 const Task = require('../models/taskModel');
 
-// Tüm görevleri listeleme (sadece kendi görevleri)
-const getTasks = async (req, res) => {
+const getAllTasks = async (req, res) => {
+    try {
+        const tasks = await Task.findAll();
+
+        res.status(200).json(tasks);
+    } catch (err) {
+        console.error(err);
+        res.status(500).json({ message: "Server error" });
+    }
+};
+
+const getTasksCreatedByMe = async (req, res) => {
+    try {
+        const userId = req.user.id;
+        const tasks = await Task.findTasksCreatedByMe(userId);
+
+        res.status(200).json(tasks);
+    } catch (err) {
+        console.error(err);
+        res.status(500).json({ message: "Server error" });
+    }
+};
+
+const getTasksOfUser = async (req, res) => {
     try {
         const userId = req.user.id;
         const tasks = await Task.findAllByUser(userId);
@@ -12,6 +34,7 @@ const getTasks = async (req, res) => {
         res.status(500).json({ message: "Server error" });
     }
 };
+
 
 // Yeni görev oluşturma
 const createTask = async (req, res) => {
@@ -96,7 +119,9 @@ const deleteTask = async (req, res) => {
 
 module.exports = {
     createTask,
-    getTasks,
+    getAllTasks,
+    getTasksOfUser,
+    getTasksCreatedByMe,
     getTaskById,
     updateTask,
     deleteTask

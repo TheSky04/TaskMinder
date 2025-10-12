@@ -5,7 +5,7 @@ import TaskModel from './TaskModel';
 import {detailIcon, adjustmentIcon, editIcon, deleteIcon} from '../../icons/icons.jsx';
 import ConfirmModal from './ConfirmModal';
 
-function TaskCard({title, detail, progress, totalProgress = 0, date, selectedTask}) {
+function TaskCard({title, detail, progress, date, selectedTask}) {
 
   const [taskModelOpen, setTaskModelOpen] = useState(false);
   const [isEditing, setIsEditing] = useState(false);
@@ -22,15 +22,15 @@ function TaskCard({title, detail, progress, totalProgress = 0, date, selectedTas
   
  const arrangePriorityColor = function () {
     let colorOfCard = "";
-    if (selectedTask.priority === "low") colorOfCard = "bg-green-500";
-    if (selectedTask.priority === "medium") colorOfCard = "bg-yellow-500";
-    if (selectedTask.priority === "high") colorOfCard = "bg-red-500";
+    if (selectedTask?.priority === "low") colorOfCard = "bg-green-500";
+    if (selectedTask?.priority === "medium") colorOfCard = "bg-yellow-500";
+    if (selectedTask?.priority === "high") colorOfCard = "bg-red-500";
     return colorOfCard;
 };
 
 
   return (
-    <div className='min-w-[40rem] bg-violet-100 py-7 px-10 rounded-lg shadow-md space-y-4' >
+    <div className='min-w-[40rem] bg-violet-100 py-7 px-10 rounded-lg shadow-md space-y-4 mb-5 last:mb-0' >
         {taskModelOpen && <TaskModel selectedTask={selectedTask} setTaskModelOpen={setTaskModelOpen} isEditing={isEditing}/>}
         {openConfirmModal && <ConfirmModal selectedTask={selectedTask} setOpenConfirmModal={setOpenConfirmModal}/>}
         <div className='flex justify-between items-center'>
@@ -51,9 +51,9 @@ function TaskCard({title, detail, progress, totalProgress = 0, date, selectedTas
             </div>
             <p>{progress} / 100 </p>
         </div>
-        <p><span className='font-bold'>Priority: </span><span className={`w-2.5 h-2.5 rounded-full ${arrangePriorityColor()} inline-block mr-2`}></span>{selectedTask.priority}</p>
-        <p><span className='font-bold'>Responsible Person: </span>{selectedTask.responsiblePersonName}</p>
-        <ProgressBar value={progress} total={totalProgress} />
+        <p><span className='font-bold'>Priority: </span><span className={`w-2.5 h-2.5 rounded-full ${arrangePriorityColor()} inline-block mr-2`}></span>{selectedTask?.priority}</p>
+        <p><span className='font-bold'>Responsible Person: </span>{selectedTask?.responsiblePersonName}</p>
+        <ProgressBar value={progress} total="100" />
         <span className='bg-violet-200 text-violet-500 py-2 px-5 rounded-md'>{date}</span>
     </div>
   )

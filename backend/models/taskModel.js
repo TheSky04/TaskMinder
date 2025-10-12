@@ -34,14 +34,35 @@ class Task {
         }
     }
 
+    // kullanıcının create ettiği tasklar
+    static async findTasksCreatedByMe(userId) {
+        try {
+            const [rows] = await db.execute(
+                `SELECT * FROM tasks WHERE userId = ?`,
+                [userId]
+            );
+            return rows;
+        } catch (err) {
+            console.error('findAllByUser error:', err);
+            throw err;
+        }
+    }
+
     static async findAllByUser(userId) {
-        const [rows] = await db.execute(
-            `SELECT t.*, u.name AS responsiblePersonName
-            FROM tasks t
-            LEFT JOIN users u ON t.responsiblePerson = u.id
-            WHERE t.userId = ?`,
-            [userId]
-        );
+        try {
+            const [rows] = await db.execute(
+                `SELECT * FROM tasks WHERE responsiblePerson = ?`,
+                [userId]
+            );
+            return rows;
+        } catch (err) {
+            console.error('findAllByUser error:', err);
+            throw err;
+        }
+    }
+
+    static async findAll(){
+        const [rows] = await db.query("SELECT * FROM tasks");
         return rows;
     }
 

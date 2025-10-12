@@ -99,7 +99,6 @@ function TaskModel({ setTaskModelOpen, isEditing = false, selectedTask }) {
     };
 
     editOrCreateTaskMutation.mutate(newTask);
-    console.log(newTask);
     setTaskModelOpen(false);
   };
 
