@@ -51,7 +51,15 @@ class Task {
     static async findAllByUser(userId) {
         try {
             const [rows] = await db.execute(
-                `SELECT * FROM tasks WHERE responsiblePerson = ?`,
+                `
+                SELECT 
+                    t.*, 
+                    u.name AS responsiblePersonName
+                FROM tasks t
+                LEFT JOIN users u 
+                    ON t.responsiblePerson = u.id
+                WHERE t.responsiblePerson = ?
+                `,
                 [userId]
             );
             return rows;
@@ -61,10 +69,23 @@ class Task {
         }
     }
 
-    static async findAll(){
-        const [rows] = await db.query("SELECT * FROM tasks");
-        return rows;
+    static async findAll() {
+        try {
+            const [rows] = await db.query(`
+                SELECT 
+                    t.*, 
+                    u.name AS responsiblePersonName
+                FROM tasks t
+                LEFT JOIN users u 
+                    ON t.responsiblePerson = u.id
+            `);
+            return rows;
+        } catch (err) {
+            console.error('findAll error:', err);
+            throw err;
+        }
     }
+
 
 
     // Tek görev çekme

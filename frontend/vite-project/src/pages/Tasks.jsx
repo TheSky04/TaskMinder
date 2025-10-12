@@ -30,8 +30,30 @@ function Tasks() {
 
   });
 
+  // my todo part
+  const fetchMyTasks = async () => {
+    const response = await fetch('http://localhost:5000/tasks/me', {
+      method: 'GET',
+      headers: {
+        'Content-Type': 'application/json',
+        'Authorization': `Bearer ${token}`
+      }
+    });
+    if (!response.ok) throw new Error('Failed to fetch my tasks');
+    return response.json();
+  };
+
+  const { data: myTasks = [], myTaskError, myTaskIsLoading, myTaskRefetch } = useQuery({
+    queryKey: ['myTasks'],
+    queryFn: fetchMyTasks,
+    refetchOnWindowFocus: false,
+    staleTime: 1000 * 60 * 10,
+    cacheTime: 1000 * 60 * 30,
+
+  });
+
   useEffect(() => {
-    document.title = "Tasks - TaskMinder";
+    document.title = "TaskMinder - Tasks";
   }, []);
 
   useEffect(() => {
@@ -73,9 +95,17 @@ function Tasks() {
       <div className='MY-TODOS'>
         <h3 className="ml-5 font-bold text-2xl my-5 mt-10">My Todos</h3>
         <div className="w-[42rem] h-[40rem] overflow-y-auto ml-5 scrollbar">
-          <TaskCard title="New task" detail="New Detail" progress="50" date="2025-10-09" priority="low" />
-          <TaskCard title="New task" detail="New Detail" progress="50" date="2025-10-09" priority="low" />
-          <TaskCard title="New task" detail="New Detail" progress="50" date="2025-10-09" priority="low" />
+          {myTasks.map((task) => (
+            <TaskCard
+              selectedTask={task}
+              key={task?.id}
+              title={task?.projectName}
+              detail={task?.taskName}
+              progress={task?.progress}
+              totalProgress={task?.totalProgress}
+              date={task?.date?.slice(0,10)}
+            />
+          ))}
         </div>
       </div>
     </>

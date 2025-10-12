@@ -11,6 +11,8 @@ function TaskCard({title, detail, progress, date, selectedTask}) {
   const [isEditing, setIsEditing] = useState(false);
   const [openConfirmModal, setOpenConfirmModal] = useState(false);
 
+  console.log(selectedTask);
+
   const handleEditTask = () => {
     setTaskModelOpen(true);
     setIsEditing(true);
